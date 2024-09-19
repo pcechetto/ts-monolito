@@ -54,7 +54,7 @@ export default class Product extends BaseEntity implements AggregateRoot {
     this._description = description;
   }
 
-  set purchasedPrice(purchasedPrice: number) {
+  set purchasePrice(purchasedPrice: number) {
     this._purchasedPrice = purchasedPrice;
   }
 }
