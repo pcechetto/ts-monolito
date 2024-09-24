@@ -17,7 +17,7 @@ export interface CheckStockFacadeOutputDto {
 
 export default interface ProductAdmFacadeInterface {
   addProduct(input: AddProductFacadeInputDto): Promise<void>;
-  checkstock(
+  checkStock(
     input: CheckStockFacadeInputDto
   ): Promise<CheckStockFacadeOutputDto>;
 }
