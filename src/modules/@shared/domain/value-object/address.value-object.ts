@@ -8,13 +8,20 @@ export default class Address implements ValueObject {
   private _state: string;
   private _zipCode: string;
 
-  constructor(address: Address) {
-    this._street = address._street;
-    this._number = address._number;
-    this._complement = address._complement;
-    this._city = address._city;
-    this._state = address._state;
-    this._zipCode = address._zipCode;
+  constructor(
+    street: string,
+    number: string,
+    complement: string,
+    city: string,
+    state: string,
+    zipCode: string
+  ) {
+    this._street = street;
+    this._number = number;
+    this._complement = complement;
+    this._city = city;
+    this._state = state;
+    this._zipCode = zipCode;
     this.validate();
   }
 
