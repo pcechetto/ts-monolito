@@ -63,7 +63,7 @@ export default class GenerateInvoiceUsecase implements UseCaseInterface {
           price: item.price,
         };
       }),
-      total: invoice.items.map((item) => item.price).reduce((a, b) => a + b),
+      total: invoice.total(),
     };
   }
 }
