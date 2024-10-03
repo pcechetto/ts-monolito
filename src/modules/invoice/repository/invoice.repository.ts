@@ -6,8 +6,31 @@ import InvoiceGateway from "../gateway/invoice.gateway";
 import { InvoiceItemsModel, InvoiceModel } from "./invoice.models";
 
 export default class InvoiceRepository implements InvoiceGateway {
-  generate(invoice: Invoice): Promise<void> {
-    throw new Error("Method not implemented.");
+  async generate(invoice: Invoice): Promise<void> {
+    await InvoiceModel.create(
+      {
+        id: invoice.id.id,
+        document: invoice.document,
+        name: invoice.name,
+        street: invoice.address.street,
+        number: invoice.address.number,
+        complement: invoice.address.complement,
+        city: invoice.address.city,
+        state: invoice.address.state,
+        zipCode: invoice.address.zipCode,
+        items: invoice.items.map((item) => ({
+          id: item.id.id,
+          name: item.name,
+          price: item.price,
+        })),
+        total: invoice.total(),
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      },
+      {
+        include: [{ model: InvoiceItemsModel, as: "items" }],
+      }
+    );
   }
   async find(id: string): Promise<Invoice> {
     const invoice = await InvoiceModel.findOne({
