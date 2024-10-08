@@ -62,7 +62,7 @@ describe("InvoiceFacade test", () => {
       include: [{ model: InvoiceItemsModel, as: "items" }],
     });
 
-    console.log(invoice.id);
+    // console.log(invoice.id);
     expect(invoice.id).toBeDefined();
     expect(invoice).not.toBeNull();
     expect(invoice.name).toBe(input.name);
@@ -124,7 +124,7 @@ describe("InvoiceFacade test", () => {
 
     const result = await facade.find({ id: invoice.id });
 
-    console.log(result);
+    // console.log(result);
 
     expect(result.id).toBe(invoice.id);
     expect(result.name).toBe(invoice.name);
