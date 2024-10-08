@@ -1,17 +1,24 @@
+import Address from "../../@shared/domain/value-object/address.value-object";
 import Id from "../../@shared/domain/value-object/id.value-object";
 import Client from "../domain/client.entity";
 import CLientGateway from "../gateway/client.gateway";
 import { ClientModel } from "./client.model";
 
 export default class ClientRepository implements CLientGateway {
-  async add(client: Client): Promise<void> {
+  async add(entity: Client): Promise<void> {
     await ClientModel.create({
-      id: client.id.id,
-      name: client.name,
-      email: client.email,
-      address: client.address,
-      createdAt: new Date(),
-      updatedAt: new Date(),
+      id: entity.id.id,
+      name: entity.name,
+      email: entity.email,
+      document: entity.document,
+      street: entity.address.street,
+      number: entity.address.number,
+      complement: entity.address.complement,
+      city: entity.address.city,
+      state: entity.address.state,
+      zipCode: entity.address.zipCode,
+      createdAt: entity.createdAt,
+      updatedAt: entity.updatedAt,
     });
   }
   async find(id: string): Promise<Client> {
@@ -25,9 +32,17 @@ export default class ClientRepository implements CLientGateway {
       id: new Id(client.id),
       name: client.name,
       email: client.email,
-      address: client.address,
+      document: client.document,
+      address: new Address(
+        client.street,
+        client.number,
+        client.complement,
+        client.city,
+        client.state,
+        client.zipCode
+      ),
       createdAt: client.createdAt,
-      updatedAt: client.updatedAt,
+      updatedAt: client.createdAt,
     });
   }
 }
