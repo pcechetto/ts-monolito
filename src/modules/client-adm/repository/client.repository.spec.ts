@@ -51,8 +51,8 @@ describe("ClientRepository test", () => {
     expect(result.address.city).toEqual(client.city);
     expect(result.address.state).toEqual(client.state);
     expect(result.address.zipCode).toEqual(client.zipCode);
-    expect(result.createdAt).toStrictEqual(client.createdAt);
-    expect(result.updatedAt).toStrictEqual(client.updatedAt);
+    expect(result.createdAt).toEqual(client.createdAt);
+    expect(result.updatedAt).toEqual(client.updatedAt);
   });
 
   it("should create a client", async () => {

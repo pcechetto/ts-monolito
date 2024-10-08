@@ -4,7 +4,7 @@ import Client from "./client.entity";
 import Product from "./product.entity";
 
 type OrderProps = {
-  id: Id;
+  id?: Id;
   client: Client;
   products: Product[];
   status?: string;
