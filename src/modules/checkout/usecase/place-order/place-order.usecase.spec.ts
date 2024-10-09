@@ -150,6 +150,7 @@ describe("place order usecase unit test", () => {
 
       const mockCheckoutRepository = {
         addOrder: jest.fn(),
+        updateOrderInvoice: jest.fn(),
       };
 
       const mockInvoiceFacade = {

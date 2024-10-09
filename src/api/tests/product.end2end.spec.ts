@@ -1,21 +1,49 @@
-import { app, sequelize } from "../express";
+import { Umzug } from "umzug";
+import { migrator } from "../../test-migrations/config-migrations/migrator";
+import { app } from "../express";
 import request from "supertest";
+import { Sequelize } from "sequelize-typescript";
+import { ProductModel } from "../../modules/product-adm/repository/product.model";
 
 describe("Product e2e test", () => {
+  let sequelize: Sequelize;
+
+  let migration: Umzug<any>;
+
   beforeEach(async () => {
-    await sequelize.sync({ force: true });
+    sequelize = new Sequelize({
+      dialect: "sqlite",
+      storage: ":memory:",
+      logging: false,
+    });
+
+    sequelize.addModels([ProductModel]);
+
+    migration = migrator(sequelize);
+    await migration.up();
   });
-  afterAll(async () => {
+
+  afterEach(async () => {
+    if (!migration || !sequelize) {
+      return;
+    }
+    migration = migrator(sequelize);
+    await migration.down();
     await sequelize.close();
   });
+
   it("should create a product", async () => {
     const response = await request(app)
       .post("/products")
       .send({
+        id: "1",
         name: "Product 1",
         description: "Product 1 description",
         purchasedPrice: 10,
+        salesPrice: 10,
         stock: 10,
+        createdAt: new Date(),
+        updatedAt: new Date(),
       })
       .set("Content-Type", "application/json")
       .set("Accept", "application/json");
@@ -24,6 +52,7 @@ describe("Product e2e test", () => {
     expect(response.body.description).toBe("Product 1 description");
     expect(response.body.stock).toBe(10);
     expect(response.body.purchasedPrice).toBe(10);
+    expect(response.body.salesPrice).toBe(10);
     expect(response.body.id).toBeDefined();
   });
 

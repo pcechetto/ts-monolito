@@ -11,6 +11,7 @@ productRoute.post("/", async (req: Request, res: Response) => {
       name: req.body.name,
       description: req.body.description,
       purchasedPrice: req.body.purchasedPrice,
+      salesPrice: req.body.salesPrice,
       stock: req.body.stock,
     };
 
