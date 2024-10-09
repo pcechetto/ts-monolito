@@ -1,6 +1,7 @@
 import Order from "../domain/order.entity";
 
 export default interface CheckoutGateway {
-  addOrder(order: Order): Promise<void>;
+  addOrder(order: Order): Promise<Order>;
   findOrder(id: string): Promise<Order | null>;
+  updateOrderInvoice(orderId: string, invoiceId: string): Promise<void>;
 }
