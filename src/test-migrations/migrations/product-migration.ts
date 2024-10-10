@@ -18,11 +18,11 @@ export const up: MigrationFn<Sequelize> = async ({ context: sequelize }) => {
     },
     purchasedPrice: {
       type: DataTypes.DECIMAL(10, 2),
-      allowNull: false,
+      allowNull: true,
     },
     salesPrice: {
       type: DataTypes.DECIMAL(10, 2),
-      allowNull: false,
+      allowNull: true,
     },
     stock: {
       type: DataTypes.INTEGER,

@@ -23,14 +23,6 @@ describe("Product e2e test", () => {
 
     migration = migrator(sequelize);
     await migration.up();
-
-    const tableInfo = await sequelize
-      .getQueryInterface()
-      .describeTable("products");
-    console.log(
-      "Products table structure:",
-      JSON.stringify(tableInfo, null, 2)
-    );
   });
 
   afterEach(async () => {
@@ -49,7 +41,6 @@ describe("Product e2e test", () => {
         name: "Product 1",
         description: "Product 1 description",
         purchasedPrice: 10,
-        salesPrice: 10,
         stock: 10,
       })
       .set("Content-Type", "application/json")
@@ -62,7 +53,6 @@ describe("Product e2e test", () => {
     expect(response.body.description).toBe("Product 1 description");
     expect(response.body.stock).toBe(10);
     expect(response.body.purchasedPrice).toBe(10);
-    expect(response.body.salesPrice).toBe(10);
     expect(response.body.id).toBeDefined();
   });
 

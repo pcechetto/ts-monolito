@@ -11,6 +11,10 @@ import {
 } from "../../modules/checkout/repository/order.model";
 import StoreCatalogProductModel from "../../modules/store-catalog/repository/product.model";
 import TransactionModel from "../../modules/payment/repository/transaction.model";
+import {
+  InvoiceItemsModel,
+  InvoiceModel,
+} from "../../modules/invoice/repository/invoice.models";
 
 describe("order e2e test", () => {
   let sequelize: Sequelize;
@@ -24,18 +28,28 @@ describe("order e2e test", () => {
     });
 
     sequelize.addModels([
-      ClientModel,
       ProductModel,
       OrderModel,
-      OrderProductModel,
       StoreCatalogProductModel,
+      OrderProductModel,
+      ClientModel,
       TransactionModel,
+      InvoiceModel,
+      InvoiceItemsModel,
     ]);
 
     await sequelize.sync({ force: true });
 
     const migration = migrator(sequelize);
     await migration.up();
+
+    const tableInfo = await sequelize
+      .getQueryInterface()
+      .describeTable("products");
+    console.log(
+      "Products table structure:",
+      JSON.stringify(tableInfo, null, 2)
+    );
   });
 
   afterEach(async () => {
@@ -63,6 +77,24 @@ describe("order e2e test", () => {
       updatedAt: new Date(),
     });
 
+    await StoreCatalogProductModel.create({
+      id: "2",
+      name: "My Product 2",
+      description: "Product description",
+      salesPrice: 25,
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    });
+
+    await StoreCatalogProductModel.create({
+      id: "1",
+      name: "My Product 1",
+      description: "Product description",
+      salesPrice: 25,
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    });
+
     await ProductModel.create({
       id: "1",
       name: "My Product 1",
@@ -79,24 +111,6 @@ describe("order e2e test", () => {
       description: "Product description",
       purchasedPrice: 25,
       stock: 10,
-      createdAt: new Date(),
-      updatedAt: new Date(),
-    });
-
-    await StoreCatalogProductModel.create({
-      id: "2",
-      name: "My Product 2",
-      description: "Product description",
-      price: 25,
-      createdAt: new Date(),
-      updatedAt: new Date(),
-    });
-
-    await StoreCatalogProductModel.create({
-      id: "1",
-      name: "My Product 1",
-      description: "Product description",
-      price: 25,
       createdAt: new Date(),
       updatedAt: new Date(),
     });
