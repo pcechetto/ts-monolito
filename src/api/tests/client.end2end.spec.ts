@@ -1,16 +1,32 @@
-import { app, sequelize } from "../express";
+import { Sequelize } from "sequelize-typescript";
 import request from "supertest";
+import { ClientModel } from "../../modules/client-adm/repository/client.model";
+import { app } from "../express";
+import { migrator } from "../../test-migrations/config-migrations/migrator";
 
 describe("client e2e test", () => {
+  let sequelize: Sequelize;
+
   beforeEach(async () => {
+    sequelize = new Sequelize({
+      dialect: "sqlite",
+      storage: ":memory:",
+      logging: false,
+    });
+
+    sequelize.addModels([ClientModel]);
+
     await sequelize.sync({ force: true });
+
+    const migration = migrator(sequelize);
+    await migration.up();
   });
 
   afterAll(async () => {
-    await sequelize.close();
+    sequelize.close();
   });
 
-  it("should create a customer", async () => {
+  it("should create a client", async () => {
     const response = await request(app)
       .post("/clients")
       .send({
@@ -28,7 +44,6 @@ describe("client e2e test", () => {
       })
       .set("Content-Type", "application/json")
       .set("Accept", "application/json");
-
 
     expect(response.status).toBe(201);
   });

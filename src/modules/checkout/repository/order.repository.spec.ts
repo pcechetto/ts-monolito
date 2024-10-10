@@ -8,9 +8,7 @@ import OrderRepository from "./order.repository";
 import { OrderModel, OrderProductModel } from "./order.model";
 
 import { ClientModel } from "../../client-adm/repository/client.model";
-import ProductModel from "../../store-catalog/repository/product.model";
-import CheckoutFacade from "../facade/checkout.facade";
-import PlaceOrderUseCase from "../usecase/place-order/place-order.usecase";
+import StoreCatalogProductModel from "../../store-catalog/repository/product.model";
 
 describe("Order Repository test", () => {
   let sequelize: Sequelize;
@@ -27,7 +25,7 @@ describe("Order Repository test", () => {
       OrderModel,
       OrderProductModel,
       ClientModel,
-      ProductModel,
+      StoreCatalogProductModel,
     ]);
     await sequelize.sync();
   });
@@ -77,17 +75,19 @@ describe("Order Repository test", () => {
       name: "Product 1",
       description: "Product 1 description",
       salesPrice: 100,
+      createdAt,
+      updatedAt,
     };
 
     const product = new Product(productProps);
 
-    await ProductModel.create({
+    await StoreCatalogProductModel.create({
       id: product.id.id,
       name: product.name,
       description: product.description,
       salesPrice: product.salesPrice,
-      createdAt,
-      updatedAt,
+      createdAt: new Date(),
+      updatedAt: new Date(),
     });
 
     const order = new Order({

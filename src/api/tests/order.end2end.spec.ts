@@ -9,6 +9,8 @@ import {
   OrderModel,
   OrderProductModel,
 } from "../../modules/checkout/repository/order.model";
+import StoreCatalogProductModel from "../../modules/store-catalog/repository/product.model";
+import TransactionModel from "../../modules/payment/repository/transaction.model";
 
 describe("order e2e test", () => {
   let sequelize: Sequelize;
@@ -26,9 +28,13 @@ describe("order e2e test", () => {
       ProductModel,
       OrderModel,
       OrderProductModel,
+      StoreCatalogProductModel,
+      TransactionModel,
     ]);
 
-    migration = migrator(sequelize);
+    await sequelize.sync({ force: true });
+
+    const migration = migrator(sequelize);
     await migration.up();
   });
 
@@ -59,7 +65,7 @@ describe("order e2e test", () => {
 
     await ProductModel.create({
       id: "1",
-      name: "My Product",
+      name: "My Product 1",
       description: "Product description",
       purchasedPrice: 100,
       stock: 10,
@@ -77,18 +83,22 @@ describe("order e2e test", () => {
       updatedAt: new Date(),
     });
 
-    await ProductModel.create({
-      id: "1",
-      name: "Product 1",
-      description: "Description 1",
-      salesPrice: 150,
+    await StoreCatalogProductModel.create({
+      id: "2",
+      name: "My Product 2",
+      description: "Product description",
+      price: 25,
+      createdAt: new Date(),
+      updatedAt: new Date(),
     });
 
-    await ProductModel.create({
-      id: "2",
-      name: "Product 2",
-      description: "Description 2",
-      salesPrice: 250,
+    await StoreCatalogProductModel.create({
+      id: "1",
+      name: "My Product 1",
+      description: "Product description",
+      price: 25,
+      createdAt: new Date(),
+      updatedAt: new Date(),
     });
 
     const response = await request(app)
@@ -108,10 +118,6 @@ describe("order e2e test", () => {
       {
         productId: "2",
         quantity: 2,
-      },
-      {
-        productId: "3",
-        quantity: 3,
       },
     ]);
   });

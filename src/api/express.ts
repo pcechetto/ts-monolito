@@ -11,6 +11,7 @@ import {
 } from "../modules/checkout/repository/order.model";
 import { migrator } from "../test-migrations/config-migrations/migrator";
 import { Umzug } from "umzug";
+import StoreCatalogProductModel from "../modules/store-catalog/repository/product.model";
 
 export const app: Express = express();
 app.use(express.json());
@@ -32,9 +33,11 @@ export async function setupDb() {
   sequelize.addModels([
     ClientModel,
     ProductModel,
+    StoreCatalogProductModel,
     OrderModel,
     OrderProductModel,
   ]);
+  await sequelize.sync({ force: true });
 
   migration = migrator(sequelize);
   await migration.up();

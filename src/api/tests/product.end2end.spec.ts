@@ -19,8 +19,18 @@ describe("Product e2e test", () => {
 
     sequelize.addModels([ProductModel]);
 
+    await sequelize.sync({ force: true });
+
     migration = migrator(sequelize);
     await migration.up();
+
+    const tableInfo = await sequelize
+      .getQueryInterface()
+      .describeTable("products");
+    console.log(
+      "Products table structure:",
+      JSON.stringify(tableInfo, null, 2)
+    );
   });
 
   afterEach(async () => {
@@ -36,17 +46,17 @@ describe("Product e2e test", () => {
     const response = await request(app)
       .post("/products")
       .send({
-        id: "1",
         name: "Product 1",
         description: "Product 1 description",
         purchasedPrice: 10,
         salesPrice: 10,
         stock: 10,
-        createdAt: new Date(),
-        updatedAt: new Date(),
       })
       .set("Content-Type", "application/json")
       .set("Accept", "application/json");
+
+    console.log("Response body:", JSON.stringify(response.body, null, 2));
+
     expect(response.status).toBe(201);
     expect(response.body.name).toBe("Product 1");
     expect(response.body.description).toBe("Product 1 description");

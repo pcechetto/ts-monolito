@@ -8,7 +8,7 @@ import {
   ForeignKey,
 } from "sequelize-typescript";
 import { ClientModel } from "../../client-adm/repository/client.model";
-import { ProductModel } from "../../product-adm/repository/product.model";
+import StoreCatalogProductModel from "../../store-catalog/repository/product.model";
 
 @Table({
   tableName: "orders",
@@ -52,13 +52,13 @@ export class OrderProductModel extends Model {
   @Column({ allowNull: false })
   declare order_id: string;
 
-  @ForeignKey(() => ProductModel)
+  @ForeignKey(() => StoreCatalogProductModel)
   @Column({ allowNull: false })
   declare product_id: string;
 
   @BelongsTo(() => OrderModel)
   declare order: OrderModel;
 
-  @BelongsTo(() => ProductModel)
-  declare product: ProductModel;
+  @BelongsTo(() => StoreCatalogProductModel)
+  declare product: StoreCatalogProductModel;
 }
