@@ -19,10 +19,12 @@ describe("Product e2e test", () => {
 
     sequelize.addModels([ProductModel]);
 
-    await sequelize.sync({ force: true });
+    // await sequelize.sync({ force: true });
 
     migration = migrator(sequelize);
     await migration.up();
+
+    await sequelize.sync({ force: true });
   });
 
   afterEach(async () => {

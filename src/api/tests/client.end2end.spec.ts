@@ -16,10 +16,12 @@ describe("client e2e test", () => {
 
     sequelize.addModels([ClientModel]);
 
-    await sequelize.sync({ force: true });
+    // await sequelize.sync({ force: true });
 
     const migration = migrator(sequelize);
     await migration.up();
+
+    await sequelize.sync({ force: true });
   });
 
   afterAll(async () => {

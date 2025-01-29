@@ -39,12 +39,20 @@ export async function setupDb() {
     OrderProductModel,
     TransactionModel,
   ]);
+
   await sequelize.sync({ force: true });
 
   migration = migrator(sequelize);
   await migration.up();
 
-  console.log("models: ", sequelize.models);
+  // await sequelize.sync({ force: true });
+
+  // const tableInfo = await sequelize
+  //   .getQueryInterface()
+  //   .describeTable("products");
+  // console.log("tableInfo: ", tableInfo);
+
+  // console.log("models: ", sequelize.models);
 }
 
 setupDb();

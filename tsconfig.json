@@ -108,5 +108,5 @@
   },
   "include": [
     "src/**/*.ts"
-  ],
+, "src/test-migrations/migrations/product-migration.ts"  ],
 }

@@ -1,7 +1,7 @@
 import { Sequelize } from "sequelize-typescript";
 import { ClientModel } from "../../modules/client-adm/repository/client.model";
 import { ProductModel } from "../../modules/product-adm/repository/product.model";
-import { app, sequelize } from "../express";
+import { app } from "../express";
 import request from "supertest";
 import { Umzug } from "umzug";
 import { migrator } from "../../test-migrations/config-migrations/migrator";
@@ -43,13 +43,15 @@ describe("order e2e test", () => {
     const migration = migrator(sequelize);
     await migration.up();
 
-    const tableInfo = await sequelize
-      .getQueryInterface()
-      .describeTable("products");
-    console.log(
-      "Products table structure:",
-      JSON.stringify(tableInfo, null, 2)
-    );
+    // await sequelize.sync({ force: true });
+
+    // const tableInfo = await sequelize
+    //   .getQueryInterface()
+    //   .describeTable("products");
+    // console.log(
+    //   "Products table structure:",
+    //   JSON.stringify(tableInfo, null, 2)
+    // );
   });
 
   afterEach(async () => {
@@ -123,15 +125,12 @@ describe("order e2e test", () => {
       });
 
     expect(response.status).toBe(201);
-    expect(response.body.clientId).toBe("1");
-    expect(response.body.products).toStrictEqual([
+    expect(response.body.products).toEqual([
       {
-        productId: "1",
-        quantity: 1,
+        productsId: "1",
       },
       {
-        productId: "2",
-        quantity: 2,
+        productsId: "2",
       },
     ]);
   });

@@ -18,7 +18,8 @@
   "scripts": {
     "test": "npm run tsc -- --noEmit && jest",
     "tsc": "tsc",
-    "dev": "nodemon"
+    "dev": "nodemon",
+    "migrate": "node -r ts-node/register/transpile-only ./src/test-migrations/config-migrations/migrator-cli.ts"
   },
   "dependencies": {
     "@types/express": "^4.17.21",
