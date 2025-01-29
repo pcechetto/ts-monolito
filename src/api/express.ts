@@ -13,6 +13,11 @@ import { migrator } from "../test-migrations/config-migrations/migrator";
 import { Umzug } from "umzug";
 import StoreCatalogProductModel from "../modules/store-catalog/repository/product.model";
 import TransactionModel from "../modules/payment/repository/transaction.model";
+import { incoiveRoute } from "./routes/invoice.route";
+import {
+  InvoiceItemsModel,
+  InvoiceModel,
+} from "../modules/invoice/repository/invoice.models";
 
 export const app: Express = express();
 app.use(express.json());
@@ -20,6 +25,7 @@ app.use(express.json());
 app.use("/clients", clientRoute);
 app.use("/products", productRoute);
 app.use("/checkout", checkoutRoute);
+app.use("/invoices", incoiveRoute);
 
 export let sequelize: Sequelize;
 let migration: Umzug<any>;
@@ -38,6 +44,8 @@ export async function setupDb() {
     OrderModel,
     OrderProductModel,
     TransactionModel,
+    InvoiceModel,
+    InvoiceItemsModel,
   ]);
 
   await sequelize.sync({ force: true });
